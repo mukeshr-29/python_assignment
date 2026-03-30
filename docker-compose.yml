@@ -6,7 +6,7 @@ services:
     image: flaskapp:latest 
     container_name: flaskapp
     ports:
-      - "80:5000"
+      - "5000:5000"
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://postgres:postgres@db:5432/mydb
     depends_on:
