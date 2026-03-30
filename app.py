@@ -4,20 +4,18 @@ from flask import Flask, render_template, request, jsonify
 
 from database import db
 from sqlalchemy import text
+import time
+from sqlalchemy.exc import OperationalError
+from model.client import Client
 
 
 app = Flask(__name__)
 
 # DATABASE CONFIG
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres @localhost:5432/aceest_fitness'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db:5432/mydb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 from model.client import Client
-
-
-
-
-
 
 # SAME LOGIC FROM TKINTER
 programs = {
@@ -191,8 +189,22 @@ def home():
 def get_program(name):
     return jsonify(programs[name])
 
+def init_db():
+    retries = 10
+    while retries > 0:
+        try:
+            with app.app_context():
+                db.create_all()
+                print("✅ Tables created successfully")
+                return
+        except OperationalError as e:
+            print(f" DB not ready... retrying ({10 - retries + 1}/10)")
+            time.sleep(3)
+            retries -= 1
+
+    print("❌ Could not connect to DB after retries")
+
+
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    
-    app.run(debug=False , port=5000 , host='10.163.14.147')
+    init_db()
+    app.run(host="0.0.0.0", port=5000)
