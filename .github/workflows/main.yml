@@ -1,0 +1,25 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Stop old containers
+        run: docker-compose down
+
+      - name: Build and Start containers
+        run: docker-compose up -d --build
+
+      - name: Wait for app
+        run: sleep 10
+
+      - name: Run Tests inside container
+        run: docker exec flaskapp pytest
