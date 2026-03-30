@@ -11,8 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Debug
-        run: dir
+      # - name: Debug
+      #   run: dir
 
       - name: Stop old containers
         run: docker compose down
@@ -23,8 +23,8 @@ jobs:
       - name: Wait for app
         run: Start-Sleep -Seconds 10
 
-      - name: Debug container files
-        run: docker exec flaskapp ls -R
+      # - name: Debug container files
+      #   run: docker exec flaskapp ls -R
 
       - name: Run tests
         run: docker exec flaskapp pytest
