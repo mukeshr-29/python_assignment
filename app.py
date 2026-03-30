@@ -202,9 +202,8 @@ def init_db():
             time.sleep(3)
             retries -= 1
 
-    print("❌ Could not connect to DB after retries")
+    print(" Could not connect to DB after retries")
 
 
 if __name__ == "__main__":
-    init_db()
-    app.run(host="0.0.0.0", port=5000)
+
