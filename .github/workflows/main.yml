@@ -23,5 +23,8 @@ jobs:
       - name: Wait for app
         run: Start-Sleep -Seconds 10
 
+      - name: Debug container files
+        run: docker exec flaskapp ls -R
+
       - name: Run tests
         run: docker exec flaskapp pytest
